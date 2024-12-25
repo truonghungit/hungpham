@@ -8,8 +8,6 @@ authorInfo: Software Engineer-ChatGPT
 date: Feb 28, 2021
 ---
 
-<!-- # Building a Blog with Angular and Analog.js -->
-
 > This post is created by ChatGpt just to have example content in this template project!
 
 In the world of web development, creating a dynamic and visually appealing blog can be a great way to showcase your skills and share your thoughts with the world. In this tutorial, we'll walk you through the process of building a blog using Angular, a popular front-end framework, and Analog.js, a JavaScript library for creating interactive visualizations. By the end of this guide, you'll have a fully functional blog that integrates engaging data visualizations powered by Analog.js.

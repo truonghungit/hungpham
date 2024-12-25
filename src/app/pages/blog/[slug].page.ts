@@ -2,15 +2,120 @@ import { Component } from '@angular/core';
 import { injectContent, MarkdownComponent } from '@analogjs/content';
 import { AsyncPipe } from '@angular/common';
 
+import { CardComponent } from '../../shared/card';
 import PostAttributes from '../../post-attributes';
 
 @Component({
   selector: 'app-blog-post',
   standalone: true,
-  imports: [AsyncPipe, MarkdownComponent],
+  imports: [AsyncPipe, MarkdownComponent, CardComponent],
   template: `
     @if (post$ | async; as post) {
-    <div class="relative px-4 sm:px-8 lg:px-12">
+    <div class="mt-8 grid grid-cols-12 gap-y-10 lg:gap-x-10">
+      <section
+        aria-labelledby="article-title"
+        class="order-1 col-span-12 grid w-full gap-4 overflow-auto lg:col-span-8">
+        <div class="flex items-center text-sm">
+          <span class="mr-auto">
+            publishDate
+            <!-- {{ articleDetails().publishDate | date : 'dd MMM yyyy' }} -->
+          </span>
+
+          <div>difficulty</div>
+          <!-- <al-difficulty
+            class="mr-2 md:mr-10"
+            [difficulty]="articleDetails().difficulty"
+            color="border" /> -->
+
+          <div class="flex items-center gap-1">
+            readingTime
+            <!-- <fast-svg name="clock" size="16" />
+            {{ articleDetails().readingTime }} min -->
+          </div>
+        </div>
+
+        <h1 id="article-title" class="flex text-[40px] font-bold">
+          {{ post.attributes.title }}
+        </h1>
+
+        <div class="flex w-full flex-col gap-10 overflow-hidden">
+          <analog-markdown classes="mt-8" [content]="post.content" />
+
+          <app-card alDarkCard class="lg:hidden">
+            <div appCardContent>
+              share-icons
+              <!-- <al-article-share-icons
+                [slug]="articleDetails().slug"
+                [title]="articleDetails().title"
+                [language]="articleDetails().lang" /> -->
+            </div>
+          </app-card>
+          <!-- <al-card alGradientCard #view>
+            <al-newsletter alCardContent />
+          </al-card> -->
+
+          <!-- @defer (on viewport(view); on timer(5s)) {
+          <section>
+            <al-related-articles [id]="articleDetails().id" />
+          </section>
+          } @placeholder {
+          <div class="grid grid-cols-2 gap-4">
+            <al-article-compact-card-skeleton *alRepeat="2" />
+          </div>
+          } -->
+        </div>
+      </section>
+      <aside class="order-3 col-span-12 lg:col-span-4">
+        author-card
+        <!-- <al-author-card
+          [author]="articleDetails().author"
+          [clampText]="true"
+          [linkable]="true" /> -->
+
+        <div class="sticky top-24 mt-5 hidden flex-col gap-4 lg:flex">
+          <!-- @if (articleDetails().anchors.length) {
+          <al-card alDarkCard>
+            <div alCardContent>
+              <al-table-of-contents
+                alTableOfContentsScrollSpy
+                class="al-scroll block max-h-[50dvh] overflow-auto"
+                [anchors]="articleDetails().anchors" />
+            </div>
+          </al-card>
+          } -->
+
+          <app-card alDarkCard>
+            <div appCardContent>
+              table-of-contents
+              <!-- <al-table-of-contents
+                alTableOfContentsScrollSpy
+                class="al-scroll block max-h-[50dvh] overflow-auto"
+                [anchors]="articleDetails().anchors" /> -->
+            </div>
+          </app-card>
+
+          <app-card alDarkCard>
+            <div appCardContent>
+              share-icons
+              <!-- <al-article-share-icons
+                [slug]="articleDetails().slug"
+                [title]="articleDetails().title"
+                [language]="articleDetails().lang" /> -->
+            </div>
+          </app-card>
+        </div>
+      </aside>
+      <footer class="order-2 col-span-12 lg:order-4 lg:col-span-8">
+        <!-- @defer (on viewport(view); on timer(3000ms)) {
+        <al-giscus-comments />
+        } @placeholder {
+        <div class="h-[600px]"></div>
+        } -->
+        footer
+      </footer>
+    </div>
+
+    <!-- <div class="relative px-4 sm:px-8 lg:px-12">
       <div class="mx-auto max-w-2xl lg:max-w-5xl">
         <div class="xl:relative">
           <div class="mx-auto max-w-2xl">
@@ -40,7 +145,7 @@ import PostAttributes from '../../post-attributes';
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     }
   `,
   styles: [],
@@ -50,4 +155,10 @@ export default class BlogPostComponent {
     param: 'slug',
     subdirectory: 'blog',
   });
+
+  constructor() {
+    this.post$.subscribe((data) => {
+      console.log(data);
+    });
+  }
 }

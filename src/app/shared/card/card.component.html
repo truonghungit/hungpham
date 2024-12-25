@@ -1,0 +1,16 @@
+@if (imageSrc()) {
+  <div class="relative aspect-video">
+    <img
+      alt="Card Image"
+      class="h-full w-full object-cover object-top"
+      [ngSrc]="imageSrc()!"
+      width="321"
+      height="188"
+    />
+  </div>
+}
+<div class="p-6">
+  <ng-content select="[appCardHeader]"></ng-content>
+  <ng-content select="[appCardContent]"></ng-content>
+  <ng-content select="[appCardFooter]"></ng-content>
+</div>
