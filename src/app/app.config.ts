@@ -8,11 +8,17 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideFileRouter, requestContextInterceptor } from '@analogjs/router';
 import { provideContent, withMarkdownRenderer } from '@analogjs/content';
 import { withPrismHighlighter } from '@analogjs/content/prism-highlighter';
+import { withInMemoryScrolling } from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideFileRouter(),
+    provideFileRouter(withInMemoryScrolling(
+      {
+        anchorScrolling: 'enabled',
+        scrollPositionRestoration: 'top'
+      }
+    )),
     provideHttpClient(
       withFetch(),
       withInterceptors([requestContextInterceptor])

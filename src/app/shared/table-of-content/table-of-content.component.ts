@@ -1,5 +1,12 @@
-import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, model, signal } from '@angular/core';
+import { NgClass, ViewportScroller } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+  model,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -11,11 +18,15 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableOfContentComponent {
+  readonly scroller = inject(ViewportScroller);
+
   @Input() content: any = '';
 
   readonly activeAnchorTitle = model<string | undefined>(undefined);
 
-  anchors = signal<{ type: 'H1' | 'H2' | 'H3'; title: string }[]>([]);
+  anchors = signal<
+    { type: 'H1' | 'H2' | 'H3'; title: string; fragment: string }[]
+  >([]);
 
   ngOnChanges(): void {
     this.parseContent();
@@ -30,16 +41,26 @@ export class TableOfContentComponent {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = this.content;
 
-    const extractedAnchors: { type: 'H1' | 'H2' | 'H3'; title: string }[] = [];
+    const extractedAnchors: {
+      type: 'H1' | 'H2' | 'H3';
+      title: string;
+      fragment: string;
+    }[] = [];
 
     tempDiv.querySelectorAll('h1, h2, h3').forEach((element) => {
       const type = element.tagName as 'H1' | 'H2' | 'H3';
       const title = element.textContent?.trim() || '';
+      const fragment = element.id;
+
       if (title) {
-        extractedAnchors.push({ type, title });
+        extractedAnchors.push({ type, title, fragment });
       }
     });
 
     this.anchors.set(extractedAnchors);
+  }
+
+  backToTop(): void {
+    this.scroller.scrollToPosition([0, 0]);
   }
 }
