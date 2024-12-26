@@ -3,12 +3,18 @@ import { injectContent, MarkdownComponent } from '@analogjs/content';
 import { AsyncPipe } from '@angular/common';
 
 import { CardComponent } from '../../shared/card';
+import { TableOfContentComponent } from '../../shared/table-of-content';
 import PostAttributes from '../../post-attributes';
 
 @Component({
   selector: 'app-blog-post',
   standalone: true,
-  imports: [AsyncPipe, MarkdownComponent, CardComponent],
+  imports: [
+    AsyncPipe,
+    MarkdownComponent,
+    CardComponent,
+    TableOfContentComponent,
+  ],
   template: `
     @if (post$ | async; as post) {
     <div class="mt-8 grid grid-cols-12 gap-y-10 lg:gap-x-10">
@@ -86,7 +92,7 @@ import PostAttributes from '../../post-attributes';
 
           <app-card alDarkCard>
             <div appCardContent>
-              table-of-contents
+              <app-table-of-content [content]="post.content" />
               <!-- <al-table-of-contents
                 alTableOfContentsScrollSpy
                 class="al-scroll block max-h-[50dvh] overflow-auto"

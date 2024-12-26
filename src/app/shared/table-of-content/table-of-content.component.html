@@ -1,0 +1,61 @@
+<!-- <div class="p-4 bg-gray-100 rounded-md">
+  <h2 class="text-lg font-semibold">Table of Contents</h2>
+  <ul class="mt-2 space-y-2">
+    @for (anchor of anchors(); track anchor.title) {
+    <li>
+      <span
+        class="inline-block w-2 h-2 rounded-full mr-2"
+        [ngClass]="{
+          'bg-red-500': anchor.type === 'H1',
+          'bg-blue-500': anchor.type === 'H2',
+          'bg-green-500': anchor.type === 'H3'
+        }"></span>
+      <span
+        [ngClass]="{
+          'font-bold': anchor.type === 'H1',
+          'ml-4 font-medium': anchor.type === 'H2',
+          'ml-8': anchor.type === 'H3'
+        }">
+        {{ anchor.title }}
+      </span>
+    </li>
+    }
+  </ul>
+</div> -->
+
+<div class="text-sm font-bold">
+  <header class="mb-4 text-lg">Table of Contents</header>
+  <div class="relative">
+    <ul class="text- relative z-10 flex flex-col">
+      @for (anchor of anchors(); track anchor.title) {
+      <li
+        class="before:bg-al-muted relative py-2 before:absolute before:left-[5px] before:top-0 before:-z-10 before:h-full before:w-[1px] before:content-[''] before:first:!top-1/2 before:first:!h-1/2 before:last:!h-1/2">
+        <div class="flex items-center gap-4">
+          <div class="flex w-[11px] shrink-0 items-center justify-center">
+            <div
+              class="bg-al-muted outline-al-background rounded-full outline"
+              [ngClass]="{
+                'size-[11px]': anchor.type === 'H2',
+                'bg-al-border  size-[7px]': anchor.type === 'H3'
+              }"
+              [class.!bg-al-primary]="
+                activeAnchorTitle() === anchor.title
+              "></div>
+          </div>
+
+          <a
+            [ngClass]="{
+              'text-al-primary font-bold': activeAnchorTitle() === anchor.title,
+              'ml-2 font-medium': anchor.type === 'H3'
+            }"
+            [fragment]="anchor.title"
+            [routerLink]="[]"
+            (click)="anchorClick.emit(anchor)">
+            {{ anchor.title }}
+          </a>
+        </div>
+      </li>
+      }
+    </ul>
+  </div>
+</div>
